@@ -1,0 +1,22 @@
+.header {
+  background-color: #053b50;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  font-size: larger;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  justify-content: space-between;
+
+  div {
+    > a {
+      text-decoration: none;
+      color: white;
+      padding-left: 3rem;
+      padding-right: 3rem;
+      &:hover {
+        color: gray;
+      }
+    }
+  }
+}
