@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Context, server } from "../main";
 import toast from "react-hot-toast";
 
@@ -8,10 +8,13 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setIsAuthenticated } = useContext(Context);
+  const { isAuthenticated, setIsAuthenticated, loading, setLoading } =
+    useContext(Context);
+  if (isAuthenticated) return <Navigate to={"/"} />;
 
   const submitHandler = async (e) => {
     try {
+      setLoading(true);
       e.preventDefault();
       const { data } = await axios.post(
         `${server}/users/login`,
@@ -28,9 +31,11 @@ const Login = () => {
       );
       toast.success(data.message);
       setIsAuthenticated(true);
+      setLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
       setIsAuthenticated(false);
+      setLoading(false);
     }
   };
 
@@ -51,7 +56,9 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit">Login</button>
+          <button disabled={loading} type="submit">
+            Login
+          </button>
           <h2>OR</h2>
         </form>
         <Link to={"/register"}>

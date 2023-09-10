@@ -1,9 +1,23 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../main";
+import axios from "axios";
+import { server } from "../main";
+import toast from "react-hot-toast";
 
 const Header = () => {
   const { isAuthenticated } = useContext(Context);
+  const logoutHandler = () => {
+    try {
+      axios.get(`${server}/users/logout`, {
+        withCredentials: true,
+      });
+      toast.success("Logged Out");
+      isAuthenticated(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
 
   return (
     <div className="header">
@@ -15,7 +29,9 @@ const Header = () => {
 
         <Link to={"/register"}>Register</Link>
         {isAuthenticated ? (
-          <Link to={"/logout"}>Logout</Link>
+          <Link onClick={logoutHandler} to="/login">
+            Logout
+          </Link>
         ) : (
           <Link to={"/login"}>Login</Link>
         )}

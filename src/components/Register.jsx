@@ -8,9 +8,12 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+  const { isAuthenticated, setIsAuthenticated, loading, setLoading } =
+    useContext(Context);
+  if (isAuthenticated) return <Navigate to={"/"} />;
 
   const submitHandler = async (e) => {
+    setLoading(true);
     e.preventDefault();
     try {
       const { data } = await axios.post(
@@ -25,12 +28,13 @@ const Register = () => {
       );
       toast.success(data.message);
       setIsAuthenticated(true);
+      setLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
       setIsAuthenticated(false);
+      setLoading(false);
     }
   };
-  if (isAuthenticated) return <Navigate to={"/"} />;
   return (
     <>
       <div>
@@ -58,7 +62,7 @@ const Register = () => {
           <h2>OR</h2>
         </form>
         <Link to={"/login"}>
-          <button>Login</button>
+          <button disabled={loading}>Login</button>
         </Link>
       </div>
     </>
