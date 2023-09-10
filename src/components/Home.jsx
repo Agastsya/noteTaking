@@ -1,11 +1,13 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { server } from "../main";
 import toast from "react-hot-toast";
+import ListCard from "./ListCard";
 
 const Home = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [task, setTask] = useState([]);
 
   const submitHandler = async (e) => {
     try {
@@ -28,6 +30,19 @@ const Home = () => {
       toast.success(error.response.data.message);
     }
   };
+
+  useEffect(() => {
+    axios
+      .get(`${server}/tasks/my`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setTask(res.data.task);
+      })
+      .catch((e) => {
+        toast.error(e.response.data.message);
+      });
+  }, [task]);
 
   return (
     <>
@@ -55,6 +70,12 @@ const Home = () => {
             <button type="submit">Add Task</button>
           </form>
         </div>
+        {task
+          .slice()
+          .reverse()
+          .map((i) => (
+            <ListCard key={i._id} title={i.title} description={i.description} />
+          ))}
       </div>
     </>
   );
