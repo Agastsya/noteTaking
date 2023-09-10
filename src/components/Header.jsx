@@ -1,6 +1,10 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { Context } from "../main";
 
 const Header = () => {
+  const { isAuthenticated } = useContext(Context);
+
   return (
     <div className="header">
       <div className="left-header">
@@ -10,8 +14,11 @@ const Header = () => {
         <Link to={"/profile"}>Profile</Link>
 
         <Link to={"/register"}>Register</Link>
-
-        <Link to={"/login"}>Login</Link>
+        {isAuthenticated ? (
+          <Link to={"/logout"}>Logout</Link>
+        ) : (
+          <Link to={"/login"}>Login</Link>
+        )}
       </div>
     </div>
   );
