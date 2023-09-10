@@ -9,6 +9,34 @@ const Home = () => {
   const [description, setDescription] = useState("");
   const [task, setTask] = useState([]);
 
+  const updateHandler = async (id) => {
+    try {
+      const { data } = await axios.put(
+        `${server}/tasks/${id}`,
+        {
+          title,
+          description, // Modify with the updated data
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      toast.success(data.message);
+    } catch (error) {
+      toast.error("error.response.data.message");
+    }
+  };
+  const deleteHandler = async (id) => {
+    try {
+      const { data } = await axios.delete(`${server}/tasks/${id}`, {
+        withCredentials: true,
+      });
+      toast.success(data.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
   const submitHandler = async (e) => {
     try {
       e.preventDefault();
@@ -39,17 +67,18 @@ const Home = () => {
       .then((res) => {
         setTask(res.data.task);
       })
-      .catch((e) => {
-        toast.error(e.response.data.message);
+      .catch((error) => {
+        toast.error("Login First");
+        console.log(error);
       });
   }, [task]);
 
   return (
     <>
       <div className="task-body">
-        <h1> Your Tasks</h1>
-
         <div className="task-input">
+          <h1> Your Tasks</h1>
+
           <form onSubmit={submitHandler}>
             <input
               type="text"
@@ -70,12 +99,17 @@ const Home = () => {
             <button type="submit">Add Task</button>
           </form>
         </div>
-        {task
-          .slice()
-          .reverse()
-          .map((i) => (
-            <ListCard key={i._id} title={i.title} description={i.description} />
-          ))}
+        {task.reverse().map((i) => (
+          <ListCard
+            key={i._id}
+            id={i._id}
+            title={i.title}
+            description={i.description}
+            isCompleted={i.isCompleted}
+            updateHandler={updateHandler}
+            deleteHandler={deleteHandler}
+          />
+        ))}
       </div>
     </>
   );

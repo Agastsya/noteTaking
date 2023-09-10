@@ -1,4 +1,27 @@
 .listcard {
   background-color: white;
-  margin: 10px 40px;
+  margin: 1rem 26rem;
+  border-radius: 3px;
+  > button {
+    width: 12rem;
+    margin: 1rem auto;
+
+    display: flex;
+    justify-content: center;
+    padding: 0.6rem 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #053b50;
+    color: white;
+    cursor: pointer;
+    &:hover {
+      background-color: white;
+      color: #053b50;
+      border: 2px solid #053b50;
+    }
+  }
+}
+.checkbox {
+  width: 2rem; /* Set the desired width */
+  height: 2rem; /* Set the desired height */
 }
