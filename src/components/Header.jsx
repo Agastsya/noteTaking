@@ -27,7 +27,11 @@ const Header = () => {
       <div className="right-header">
         <Link to={"/profile"}>Profile</Link>
 
-        <Link to={"/register"}>Register</Link>
+        {isAuthenticated ? (
+          <Link to="/register"></Link>
+        ) : (
+          <Link to={"/register"}>Register</Link>
+        )}
         {isAuthenticated ? (
           <Link onClick={logoutHandler} to="/login">
             Logout

@@ -6,8 +6,14 @@ import Profile from "./components/Profile";
 import "./styles/app.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import { useContext, useEffect } from "react";
+import { Context } from "./main";
+import { server } from "./main";
+import axios from "axios";
 
 function App() {
+  const { setUser, setIsAuthenticated } = useContext(Context);
+
   return (
     <>
       <Router>

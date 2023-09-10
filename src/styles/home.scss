@@ -1,0 +1,19 @@
+.task-body {
+  display: flex;
+  flex-direction: column;
+  .task-input {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    margin: 0 auto;
+
+    > form {
+      gap: 10px;
+      width: 40rem;
+      input {
+        height: 3rem;
+        font-size: larger;
+      }
+    }
+  }
+}
