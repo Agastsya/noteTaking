@@ -1,13 +1,15 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { server } from "../main";
+import { useContext, useEffect, useState } from "react";
+import { Context, server } from "../main";
 import toast from "react-hot-toast";
 import ListCard from "./ListCard";
+import { Navigate } from "react-router-dom";
 
 const Home = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [task, setTask] = useState([]);
+  const { isAuthenticated } = useContext(Context);
 
   const updateHandler = async (id) => {
     try {
@@ -73,6 +75,8 @@ const Home = () => {
       });
   }, [task]);
 
+  if (!isAuthenticated) return <Navigate to={"/login"} />;
+
   return (
     <>
       <div className="task-body">
@@ -99,17 +103,20 @@ const Home = () => {
             <button type="submit">Add Task</button>
           </form>
         </div>
-        {task.reverse().map((i) => (
-          <ListCard
-            key={i._id}
-            id={i._id}
-            title={i.title}
-            description={i.description}
-            isCompleted={i.isCompleted}
-            updateHandler={updateHandler}
-            deleteHandler={deleteHandler}
-          />
-        ))}
+        {task
+          .slice()
+          .reverse()
+          .map((i) => (
+            <ListCard
+              key={i._id}
+              id={i._id}
+              title={i.title}
+              description={i.description}
+              isCompleted={i.isCompleted}
+              updateHandler={updateHandler}
+              deleteHandler={deleteHandler}
+            />
+          ))}
       </div>
     </>
   );

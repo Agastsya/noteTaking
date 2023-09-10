@@ -2,8 +2,10 @@ import { useContext, useEffect } from "react";
 import { Context } from "../main";
 import axios from "axios";
 import { server } from "../main";
+import { Navigate } from "react-router-dom";
 
 const Profile = () => {
+  const { isAuthenticated } = useContext(Context);
   const { user, setUser, setIsAuthenticated } = useContext(Context);
   useEffect(() => {
     axios
@@ -15,6 +17,8 @@ const Profile = () => {
         setIsAuthenticated(true);
       });
   }, []);
+  if (!isAuthenticated) return <Navigate to={"/login"} />;
+
   return (
     <>
       <div>
