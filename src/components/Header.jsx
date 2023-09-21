@@ -22,7 +22,7 @@ const Header = () => {
   return (
     <div className="header">
       <div className="left-header">
-        <Link to={"/"}>Keep Notes </Link>
+        <Link to={"/"}>Listify </Link>
       </div>
       <div className="right-header">
         <Link to={"/profile"}>Profile</Link>
